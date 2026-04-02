@@ -15,4 +15,6 @@ PeerPublicKey=$(cat PeerPrivate1.key | wg pubkey | tee PeerPublic1.key)
 chmod go= PeerPrivate1.key
 ```
 > [!NOTE]  
-> It is advised to only deploy this setup on a server that you trust and control.
+> It's advised to only deploy this setup on a server that you trust and control.
+> 
+##### If needed, make sure the Wireguard Server's `ListenPort = 51828` is reachable from outside the Local Network, only UDP is required.
