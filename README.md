@@ -2,13 +2,13 @@
 ### Deploy Docker containers to set up a Wireguard server that routes all client traffic through Anyone Network.
 ### Generate Keys
 `$ServerPrivateKey` and `$PeerPublicKey1` needs to be generated and replaced in `docker-compose.yml`, example:
-#### Server keys
+#### Server keys:
 ```
 ServerPrivateKey=$(wg genkey | tee /etc/wireguard/ServerPrivate.key)
 ServerPublicKey=$(cat ServerPrivate.key | wg pubkey | tee ServerPublic.key)
 chmod go= ServerPrivate.key
 ```
-#### Peer1 keys
+#### Peer1 keys:
 ```
 PeerPrivateKey1=$(wg genkey | tee PeerPrivate1.key)
 PeerPublicKey=$(cat PeerPrivate1.key | wg pubkey | tee PeerPublic1.key)
