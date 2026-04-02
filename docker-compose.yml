@@ -59,8 +59,6 @@ configs:
       PreDown = iptables -t nat -F ANONGUARD
       PreDown = iptables -t nat -D PREROUTING -j ANONGUARD
       PreDown = iptables -t nat -X ANONGUARD
-      # PreUP = ip route add 192.168.88.0/24 via 172.23.0.1 dev eth0
-      # PostDown = ip route del 192.168.88.0/24 via 172.23.0.1 dev eth0
       ListenPort = 51828
       PrivateKey = 
 
