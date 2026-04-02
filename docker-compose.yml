@@ -60,12 +60,12 @@ configs:
       PreDown = iptables -t nat -D PREROUTING -j ANONGUARD
       PreDown = iptables -t nat -X ANONGUARD
       ListenPort = 51828
-      PrivateKey = 
+      PrivateKey = $ServerPrivateKey
 
       [Peer]
-      PublicKey = 
+      PublicKey = $PeerPublicKey1
       AllowedIPs = 10.52.0.2/32
 
       [Peer]
-      PublicKey = 
+      PublicKey = $PeerPublicKey2
       AllowedIPs = 10.52.0.3/32
