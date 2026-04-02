@@ -1,0 +1,73 @@
+services:
+  anonguard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: anonguard:latest
+    pull_policy: build
+    container_name: anonguard
+    init: true
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./anon:/etc/anon
+    ports:
+      - 51828:51828/udp
+    configs:
+      - source: anonrc
+        target: /etc/anon/anonrc
+      - source: ag0_conf
+        target: /etc/wireguard/ag0.conf
+
+configs:
+  anonrc:
+    content: |
+      ORPort 0
+      ControlPort 9051
+      Log notice file /var/log/anon/notices.log
+      ExitRelay 0
+      # ExitNodes {CC}
+      # StrictNodes 1
+      SocksPort 0
+      AvoidDiskWrites 1
+      CookieAuthentication 0
+      VirtualAddrNetwork 172.16.0.0/16
+      AutomapHostsOnResolve 1
+      TransPort 10.52.0.1:9055 IsolateClientAddr IsolateClientProtocol IsolateDestAddr IsolateDestPort
+      DNSPort 10.52.0.1:5353
+      SocksPolicy accept 10.52.0.0/24
+      AgreeToTerms 1
+  ag0_conf:
+    content: |
+      [Interface]
+      Address = 10.52.0.1/24
+      PostUp = iptables -t nat -N ANONGUARD
+      PostUp = iptables -t nat -A PREROUTING -j ANONGUARD
+      PostUp = iptables -t nat -A ANONGUARD -i ag0 -p tcp --syn -j REDIRECT --to-ports 9055
+      PostUp = iptables -t nat -A ANONGUARD -i ag0 -p udp --dport 53 -j REDIRECT --to-ports 5353
+      PostUp = iptables -t nat -A ANONGUARD -i ag0 -p tcp --dport 53 -j REDIRECT --to-ports 5353
+      PostUp = iptables -t nat -A ANONGUARD ! -d 10.52.0.0/24 -i ag0 -p udp ! --dport 67 -j REDIRECT --to-ports 9055
+      PostUp = iptables -t nat -A ANONGUARD ! -d 10.52.0.0/24 -i ag0 -p tcp ! --dport 67 -j REDIRECT --to-ports 9055
+      PreDown = iptables -t nat -F ANONGUARD
+      PreDown = iptables -t nat -D PREROUTING -j ANONGUARD
+      PreDown = iptables -t nat -X ANONGUARD
+      # PreUP = ip route add 192.168.88.0/24 via 172.23.0.1 dev eth0
+      # PostDown = ip route del 192.168.88.0/24 via 172.23.0.1 dev eth0
+      ListenPort = 51828
+      PrivateKey = 
+
+      [Peer]
+      PublicKey = 
+      AllowedIPs = 10.52.0.2/32
+
+      [Peer]
+      PublicKey = 
+      AllowedIPs = 10.52.0.3/32
