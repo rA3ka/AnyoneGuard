@@ -8,6 +8,7 @@ RUN apt-get update && \
     curl \
     iproute2 \
     iptables \
+    iputils-ping \
     wireguard-tools \
     && echo "anon anon/terms boolean true" | debconf-set-selections \
     && . /etc/os-release \
