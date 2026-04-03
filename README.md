@@ -1,5 +1,5 @@
 # AnyoneGuard
-### Deploy a Docker container to set up a WireGuard server that routes all client traffic through the Tor network.
+### Deploy a Docker container to set up a WireGuard server that routes all client traffic through the Anyone network.
 ### Generate Keys
 `$ServerPrivateKey` and `$PeerPublicKey1` needs to be generated and replaced in `docker-compose.yml`, example:
 #### Server keys:
