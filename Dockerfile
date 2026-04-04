@@ -9,13 +9,14 @@ RUN apt-get update && \
     iproute2 \
     iptables \
     iputils-ping \
+    nyx \
     wireguard-tools \
     && echo "anon anon/terms boolean true" | debconf-set-selections \
     && . /etc/os-release \
     && curl -fsSL https://deb.en.anyone.tech/anon.asc -o /etc/apt/trusted.gpg.d/anon.asc \
     && echo "deb [signed-by=/etc/apt/trusted.gpg.d/anon.asc] https://deb.en.anyone.tech anon-live-$VERSION_CODENAME main" > /etc/apt/sources.list.d/anon.list \
     && apt-get update \
-    && apt-get install -y --no-install-recommends anon \
+    && apt-get install -y --no-install-recommends anon anon-geoipdb \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
