@@ -18,6 +18,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
+      - ./config:/etc/wireguard
       - ./anon:/etc/anon
     ports:
       - 51828:51828/udp
